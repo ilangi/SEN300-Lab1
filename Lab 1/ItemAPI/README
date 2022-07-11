@@ -1,0 +1,19 @@
+In order to access the database with you must make this into a running container
+Start by going into the terminal of this folder and do the following commands:
+
+dotnet publish -c Release
+docker build -t dotnet-itemapi:1 .
+docker run -d -p 9000:80 --name dotnet-itemapi -d --net netSEN300 dotnet-itemapi:1
+
+
+
+URLs
+[GET]
+catalog/ - all items
+catalog/{id} - gets item with id
+[POST]
+catalog/ - add to database
+[PUT]
+catalog/ - update an item in the database
+[DELETE]
+catalog/{id} - deletes item id
