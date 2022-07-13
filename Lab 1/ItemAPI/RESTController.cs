@@ -15,7 +15,6 @@ namespace Controllers
 
 
 // GETS
-
         [HttpGet]
         public async Task<ActionResult<List<Item>>> GetAllItems()
         {
