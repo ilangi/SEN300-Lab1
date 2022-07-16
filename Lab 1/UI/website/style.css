@@ -1,0 +1,68 @@
+html
+{
+    background-color: #555;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-align: center;
+}
+.score{
+    margin-right: 3%;
+}
+form{
+    position: center;
+    background-color: #A66B49;
+    Color: #D9D6A9;
+    min-height: 5vw;
+    max-width: 40vw;
+    border:2px solid #F2CA7E;
+    font-size: 1.25vw;
+    font-weight: 150;
+    text-align: center;
+    margin: 10,10,10,10;    
+    margin-left: 550px;
+    margin-right: 300px;
+}
+.display{
+    position: center;
+    background-color: #A66B49;
+    Color: #D9D6A9;
+    min-height: 5vw;
+    max-width: 40vw;
+    border:2px solid #F2CA7E;
+    font-size: 1.25vw;
+    font-weight: 150;
+    text-align: center;
+    margin: 10,10,10,10;    
+    margin-left: 550px;
+    margin-right: 300px;
+}
+input{
+    background-color: #D9D6A9;
+    border:2px solid #A66A09;
+}
+.btn{
+    border:2px solid #34403B;
+    Color: #fff;
+    background-color: #88B0BF;
+    margin-left:.5vw;
+    padding:.4vw;
+    margin-left: 29%;
+    min-height: 2vw;
+    max-height:3vw;
+    width:8vw;
+    cursor: pointer;
+    position: relative;
+    left: 10vw;
+    top:1vw;
+    margin-bottom: 1.5vw;
+    user-select: none;
+    border-radius: 1%; 
+    font-size: 1.3vw;
+    font-weight: 125;
+    text-align: center;
+}
+.btn:hover{
+    border:2.2px solid #F2CA7E;
+    Color: #D9D6A9;
+    background-color: #eb8042;
+}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='style.css' rel='stylesheet'/>
+    <title>Generic Shopping Website</title>
+</head>
+<body>
+    <div class='    ' id="items"></div>
+        <form method='POST' action='' onsubmit='return mySubmit()'>
+            <h3>Add Item Listing</h3>
+            Title: 
+            <input id='title' type='text' /><br />
+            Details:
+            <input id='details' type='text' /><br />
+            Unit Price: 
+            <input id='unit_price' type='text' /><br />
+            Quantity:
+            <input id='quantity' type='text' /><br />
+
+            <input type='submit' value='Add Item' class="btn" />
+        </form>
+        <div id='myErrors'></div>
+    <div class="display"></div>
+    <div id="item" class="display"></div>
+    <div id='btn1' class='btn'>Next Item</div>
+    <div id='btn2' class='btn'>Previous Item</div>
+    <div id='btn3' class='btn'></div>
+    <div id='btn4' class='btn'></div>
+    <script src="script.js"></script>
+</body>
+</html>
