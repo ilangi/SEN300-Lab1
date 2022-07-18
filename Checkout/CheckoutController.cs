@@ -16,21 +16,28 @@ namespace Controllers
 
         //Post
         [HttpPost]
-        [Route("finishorder")]
-        public async Task<IResult> PostOrder(Checkout order)
+        [Route("finishorderinformation")]
+        public async Task<IResult> PostOrderInformation(PersonalOrderInformation orderinformation)
         {
-            order.TotalPrice = 0;
-            for (int i = 0; i < order.Cart.Count; i++)
-            {
-                order.TotalPrice += order.Cart[i].unit_price * order.Cart[i].quantity;
-            }
-            _orders.Checkout.Add(order);
+            _orders.Checkout.Add(orderinformation);
             await _orders.SaveChangesAsync();
-            return Results.Created($"/{order.Id}", order);
-        }
 
+            return Results.Created($"/{orderinformation.Id}", orderinformation);
+        }
+        [HttpPost]
+        [Route("finishordercart/{id}")]
+        public async Task<IResult> PostCartInformation(List<Item> cart, long id)
+        {
+            for (int i = 0; i < cart.Count; i++)
+            {
+                cart[i].CheckoutId = id;
+                _orders.Cart.Add(cart[i]);
+            }
+            await _orders.SaveChangesAsync();
+            return Results.Created($"/{id}", cart);
+        }
         //Get
-        [HttpGet("order{id}")]
+        [HttpGet("orderinformation/{id}")]
         public async Task<ActionResult<Checkout>> GetOrder(long id)
         {
             var order = await _orders.Checkout.FindAsync(id);
@@ -40,52 +47,84 @@ namespace Controllers
             }
             return Ok(order);
         }
-        [HttpGet]
-        [Route("allorders")]
-        public async Task<ActionResult<List<Checkout>>> GetAllItems()
+        [HttpGet("cartinformation/{id}")]
+        public async Task<ActionResult<Checkout>> GetCart(long id)
         {
-            return await _orders.Checkout.ToListAsync();
+            var CartInformation = _orders.Cart.Where(i => i.CheckoutId == id).ToList();
+            if(CartInformation == null)
+            {
+                return NotFound();
+            }
+            return Ok(CartInformation);
         }
 
         //Put
         [HttpPut]
-        [Route("changeorder")]
-        public async Task<IResult> PutOrder(Checkout order)
+        [Route("changeorderinformation")]
+        public async Task<IResult> updateOrderInformation(PersonalOrderInformation order)
         {
-            var updatedOrder = await _orders.Checkout.FindAsync(order.Id);
-
-            if(updatedOrder == null)
+            var order2 = await _orders.Checkout.FindAsync(order.Id);
+            if (order2 == null)
             {
                 return Results.NotFound();
             }
-            updatedOrder.Name = order.Name;
-            updatedOrder.ShippingAddress = order.ShippingAddress;
-            updatedOrder.CreditCardNumber = order.CreditCardNumber;
-            updatedOrder.CreditCardExperationMonth = order.CreditCardExperationMonth;
-            updatedOrder.CreditCardExperationYear = order.CreditCardExperationYear;
-            updatedOrder.CreditCardCVV = order.CreditCardCVV;
-            updatedOrder.Cart = order.Cart;
-            for (int i = 0; i < order.Cart.Count; i++)
-            {
-                updatedOrder.TotalPrice += updatedOrder.Cart[i].unit_price * updatedOrder.Cart[i].quantity;
-            }
+            order2.Name = order.Name;
+            order2.ShippingAddress = order.ShippingAddress;
+            order2.CreditCardNumber = order.CreditCardNumber;
+            order2.CreditCardExperationMonth = order.CreditCardExperationMonth;
+            order2.CreditCardExperationYear = order.CreditCardExperationYear;
+            order2.CreditCardCVV = order.CreditCardCVV;
 
+            await _orders.SaveChangesAsync();
+            return Results.NoContent();
+        }
+        [HttpPut]
+        [Route("changecartinformation/{id}")]
+        public async Task<IResult> updateCartInformation(List<Item> cart, long id)
+        {
+            var orderinformation = await _orders.Checkout.FindAsync(id);
+            var CartInformation = _orders.Cart.Where(i => i.CheckoutId == id).ToList();
+            for (int i = 0; i < CartInformation.Count; i++)
+            {
+                _orders.Cart.Remove(CartInformation[i]);
+            }
+            for (int i = 0; i < cart.Count; i++)
+            {
+                cart[i].CheckoutId = orderinformation.Id;
+                _orders.Cart.Add(cart[i]);
+            }
             await _orders.SaveChangesAsync();
             return Results.NoContent();
         }
 
         //Delete
         [HttpDelete]
-        [Route("delete{id}")]
-        public async Task<IResult> DeleteOrder(long id)
+        [Route("deleteorderinformation/{id}")]
+        public async Task<IResult> DeleteOrderInformation(long id)
         {
-            if (await _orders.Checkout.FindAsync(id) is Checkout order)
+            if (await _orders.Checkout.FindAsync(id) is PersonalOrderInformation orderinformation)
             {
-                _orders.Checkout.Remove(order);
+                _orders.Remove(orderinformation);
                 await _orders.SaveChangesAsync();
-                return Results.Ok(order);
+                return Results.Ok(orderinformation);
             }
             return Results.NotFound();
+        }
+        [HttpDelete]
+        [Route("deletecartinformation/{id}")]
+        public async Task<IResult> DeleteCartInformation(long id)
+        {
+            var CartInformation = _orders.Cart.Where(i => i.CheckoutId == id).ToList();
+            if (CartInformation == null)
+            {
+                return Results.NotFound();
+            }
+            for (int i = 0; i < CartInformation.Count; i++)
+            {
+                _orders.Cart.Remove(CartInformation[i]);
+            }
+            await _orders.SaveChangesAsync();
+            return Results.Ok(CartInformation);
         }
     }
 }
