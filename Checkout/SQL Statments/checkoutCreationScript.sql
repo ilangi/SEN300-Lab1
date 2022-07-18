@@ -1,9 +1,9 @@
 use master
 --drop database checkoutdb
-create database checkoutdb
+create database ordersdb
 GO
 
-use checkoutdb
+use ordersdb
 GO
 create table checkout(
 	id bigint not null IDENTITY(1,1) PRIMARY KEY,
